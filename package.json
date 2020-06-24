@@ -47,7 +47,6 @@
     "karma-qunit": "4.1.1",
     "merge-stream": "2.0.0",
     "phantomjs-prebuilt": "2.1.16",
-    "plato": "1.7.0",
     "qunit": "2.10.0"
   },
   "scripts": {
