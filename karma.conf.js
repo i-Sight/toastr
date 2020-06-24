@@ -17,7 +17,7 @@ module.exports = function (config) {
             'node_modules/jquery/dist/jquery.min.js',
             'build/toastr.css',
             'toastr.js',
-            'node_modules/qunitjs/qunit/qunit.js',
+            'node_modules/qunit/qunit/qunit.js',
             'tests/unit/qunit-helper.js',
             'tests/unit/toastr-tests.js'
         ],

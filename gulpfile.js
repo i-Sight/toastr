@@ -16,26 +16,28 @@ var log = plug.util.log;
 /**
  * List the available gulp tasks
  */
-gulp.task('help', plug.taskListing);
+function help() {
+    plug.taskListing();
+}
 
 /**
  * Lint the code, create coverage report, and a visualizer
  * @return {Stream}
  */
-gulp.task('analyze', function () {
+function analyze() {
     log('Analyzing source with JSHint and JSCS');
 
     var jshint = analyzejshint([paths.js]);
     var jscs = analyzejscs([paths.js]);
 
     return merge(jshint, jscs);
-});
+}
 
 /**
  * Minify and bundle the app's JavaScript
  * @return {Stream}
  */
-gulp.task('js', function () {
+function js() {
     log('Bundling, minifying, and copying the app\'s JavaScript');
 
     return gulp
@@ -51,31 +53,24 @@ gulp.task('js', function () {
             }
         }))
         .pipe(gulp.dest(paths.build));
-});
+}
 
 /**
  * Minify and bundle the CSS
  * @return {Stream}
  */
-gulp.task('css', function () {
+function css() {
     log('Bundling, minifying, and copying the app\'s CSS');
 
     return gulp.src(paths.less)
         .pipe(plug.less())
         .pipe(gulp.dest(paths.build))
         .pipe(plug.bytediff.start())
-        .pipe(plug.minifyCss({}))
+        .pipe(plug.cleanCss({}))
         .pipe(plug.bytediff.stop(bytediffFormatter))
         .pipe(plug.rename('toastr.min.css'))
         .pipe(gulp.dest(paths.build));
-});
-
-/**
- * Build js and css
- */
-gulp.task('default', ['js', 'css'], function () {
-    log('Analyze, Build CSS and JS');
-});
+}
 
 /**
  * Remove all files from the build folder
@@ -83,13 +78,13 @@ gulp.task('default', ['js', 'css'], function () {
  * from the cmd line: gulp clean && gulp build
  * @return {Stream}
  */
-gulp.task('clean', function (cb) {
+function clean(cb) {
     log('Cleaning: ' + plug.util.colors.blue(paths.report));
     log('Cleaning: ' + plug.util.colors.blue(paths.build));
 
     var delPaths = [paths.build, paths.report];
     del(delPaths, cb);
-});
+}
 
 /**
  * Run specs once and exit
@@ -97,9 +92,9 @@ gulp.task('clean', function (cb) {
  *    gulp test --startServers
  * @return {Stream}
  */
-gulp.task('test', function (done) {
+function test(done) {
     startTests(true /*singleRun*/, done);
-});
+}
 
 ////////////////
 
@@ -170,3 +165,11 @@ function bytediffFormatter(data) {
 function formatPercent(num, precision) {
     return (num * 100).toFixed(precision);
 }
+
+exports.help = help;
+exports.analyze = analyze;
+exports.js = js;
+exports.css = css;
+exports.default = gulp.series(js, css);
+exports.clean = clean;
+exports.test = test;
