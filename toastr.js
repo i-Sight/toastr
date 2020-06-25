@@ -323,8 +323,10 @@
 
                 function displayToast() {
                     $toastElement.hide();
-                    
-                    options.onCreate();
+
+                    if (options.onCreate) {
+                        options.onCreate();
+                    }
 
                     $toastElement[options.showMethod](
                         {duration: options.showDuration, easing: options.showEasing, complete: options.onShown}
