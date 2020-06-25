@@ -1,6 +1,6 @@
 /* jshint node:true, camelcase:false */
 var gulp = require('gulp');
-var karma = require('karma').server;
+var karma = require('karma').Server;
 var merge = require('merge-stream');
 var plug = require('gulp-load-plugins')();
 
@@ -132,10 +132,10 @@ function analyzejscs(sources) {
  * @return {undefined}
  */
 function startTests(singleRun, done) {
-    karma.start({
+    new karma({
         configFile: __dirname + '/karma.conf.js',
-        singleRun: !!singleRun
-    }, karmaCompleted);
+        singleRun: true
+    }, karmaCompleted).start();
 
     ////////////////
 
