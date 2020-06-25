@@ -1,6 +1,8 @@
+os: linux
+dist: xenial
 language: node_js
 node_js:
-  - "0.10"
+  - "10.21.0"
 
 install:
   - npm install -g gulp karma-cli
