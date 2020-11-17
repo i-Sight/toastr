@@ -1,5 +1,5 @@
 # 2.1.4-isight1 (2020-11-17)
-- Update depedencies to resolve CVEs (ITPL-15498)
+- Update dependencies to resolve CVEs (ITPL-15498)
 
 # 6454acf14 (2017-12-08)
 _No official release because there are only CI changes._
