@@ -55,7 +55,7 @@
 
             function getContainer(options, create) {
                 if (!options) { options = getOptions(); }
-                $container = $('#' + options.containerId);
+                $container = $('#' + options.containerId + '[position =' + options.positionClass + ']');
                 if ($container.length) {
                     return $container;
                 }
@@ -144,6 +144,7 @@
             function createContainer(options) {
                 $container = $('<div/>')
                     .attr('id', options.containerId)
+                    .attr('position', options.positionClass)
                     .addClass(options.positionClass);
 
                 $container.appendTo($(options.target));
@@ -157,6 +158,7 @@
                     containerId: 'toast-container',
                     debug: false,
 
+                    onCreate: undefined,
                     showMethod: 'fadeIn', //fadeIn, slideDown, and show are built into jQuery
                     showDuration: 300,
                     showEasing: 'swing', //swing and linear are built into jQuery
@@ -312,13 +314,19 @@
                     if (options.onclick) {
                         $toastElement.click(function (event) {
                             options.onclick(event);
-                            hideToast();
+                            if (options.tapToDismiss) {
+                                hideToast();
+                            }
                         });
                     }
                 }
 
                 function displayToast() {
                     $toastElement.hide();
+
+                    if (options.onCreate) {
+                        options.onCreate();
+                    }
 
                     $toastElement[options.showMethod](
                         {duration: options.showDuration, easing: options.showEasing, complete: options.onShown}
@@ -468,7 +476,7 @@
         })();
     });
 }(typeof define === 'function' && define.amd ? define : function (deps, factory) {
-    if (typeof module !== 'undefined' && module.exports) { //Node
+    if (typeof module !== 'undefined' && module.exports && typeof require === 'function') { //Node
         module.exports = factory(require('jquery'));
     } else {
         window.toastr = factory(window.jQuery);
